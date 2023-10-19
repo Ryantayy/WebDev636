@@ -108,7 +108,7 @@ Data Passed: List of available cars, caregivers, and potential error messages. <
 Data Relationship: When the page is loaded, the add_driver() function fetches the list of available cars and caregivers from the database, which is then passed to the add_driver.html template to populate the respective dropdowns. When a form submission is detected (via POST request), the same add_driver() function is responsible for data validation and database insertion. If there are any validation errors, the function repopulates the form fields with the entered data and shows relevant error messages. <br>
 
 **3. Assumptions and design decisions:** <br>
-Assumption: 
+Assumptions: 
 - Drivers aged 17 and older should not have a designated caredriver.
 - The age of the driver is limited to 10 to 100.
 - The data for cones is either None or an integer.
@@ -116,11 +116,51 @@ Assumption:
 - A car model can be associated with more than one car_num (Eg. MX-5).
 - Driver's name is to be sorted in surname and last name order but displayed in a conventional way.
 
-Design decision:
--  
+Design decision: <br>
+The website was crafted with an emphasis on both functionality and aesthetics. Here's a breakdown of the design decisions and their rationale:<br>
+1. Homepage Design: The primary landing page incorporates images for both the driver and admin interfaces, elevating the visual appeal. These images not only make the site more engaging but also offer flexibility. They serve as placeholders, allowing for seamless integration of event information or other pertinent content in the future.
+2. Navigation System: Recognizing the importance of user-friendly navigation, a comprehensive navigation bar was integrated. It ensures users can intuitively find their way around the platform, enhancing overall user experience.
+3. Driver's Run Details: This route is backed by dual templates. The first presents a dropdown list for selections, while the second displays detailed driver run stats. The differentiation ensures that when users transition from the 'list driver' app route to access specific driver run details, they aren’t confronted with the dropdown again, effectively reducing information clutter.
+4. Admin Interface: A specialized route was carved out exclusively for the admin interface. It’s an encapsulated space where administrators can tap into functionalities concealed from the general audience, ensuring secure administrative operations.
+5. Edit Runs Route: The 'edit runs' route uses one template for run selection and another for run detail modifications. The design ensures only the most pertinent fields are editable, thereby limiting potential human errors. To further bolster data integrity, input fields like time, cones, and wd are confined to numeric data types.
+6. Adding a Driver: The route to add a new driver streamlines information collection through a singular template. This consolidated approach reduces user navigation steps and ensures a smoother data entry experience. Alongside, robust input validation mechanisms are in place on both client and server sides to maintain data quality. <br>
+In essence, each design decision was a balance between user-centric aesthetics and functional robustness, all while ensuring data integrity and usability remained paramount. <br>
 
+**4. Database Questions:** <br>
+**- What SQL statement creates the car table and defines its three fields/columns? <br>**
+  CREATE TABLE IF NOT EXISTS car <br>
+  ( <br>
+  car_num INT PRIMARY KEY NOT NULL, <br>
+  model VARCHAR(20) NOT NULL, <br>
+  drive_class VARCHAR(3) NOT NULL <br>
+  ); <br>
+**- Which line of SQL code sets up the relationship between the car and driver tables? <br>**
+  FOREIGN KEY (car) REFERENCES car(car_num) <br>
+  ON UPDATE CASCADE <br>
+  ON DELETE CASCADE <br>
+**- Which 3 lines of SQL code insert the Mini and GR Yaris details into the car table? <br>**
+  INSERT INTO car VALUES <br>
+  (11,'Mini','FWD'), <br>
+  (17,'GR Yaris','4WD') <br>
+**- Suppose the club wanted to set a default value of ‘RWD’ for the driver_class field. What specific change would you need to make to the SQL to do this? <br>**
+  Modify the 'drive_class' column in the 'car' table. <br>
+  drive_class VARCHAR(3) NOT NULL DEFAULT 'RWD' <br>
+**- Suppose logins were implemented. Why is it important for drivers and the club admin to access different routes? As part of your answer, give two specific examples of problems that could occur if all of the web app facilities were available to everyone.<br>**
+It's crucial for drivers and the club admin to access different routes in a web application for several reasons:<br>
+Security: Admin routes often have capabilities that can change, delete, or update significant data. Allowing everyone to access these routes can expose the system to malicious actions or unintentional errors. <br>
+Data Integrity: Drivers typically only need to provide or update their own data. Admins, on the other hand, need to oversee the entirety of the data, including multiple drivers' details. Mixing these roles might lead to accidental modifications of another driver's data or mismanagement of event details.<br>
+Usability & User Experience: Separating routes ensures that each user type only sees the options and interfaces relevant to their tasks. This declutters the user interface, reduces confusion, and improves overall user satisfaction. <br>
+  Example 1: If everyone, including non-admin users, had access to the "add driver" function, individuals could flood the system with fake driver registrations. This would not only waste resources and storage space but also create confusion during actual events. The club might end up preparing for drivers who don't exist, leading to wasted time and effort. <br>
+  Example 2:  A driver, with unrestricted access, could potentially alter the recorded times or penalties for their runs or for other drivers' runs. This would undermine the integrity of the competitions and could lead to disputes and a lack of trust in the event outcomes. <br>
 
+**5. Image Sources:** <br>
+Image 1 <br>
+![image](https://github.com/Ryantayy/WebDev636/assets/139726938/657ae5b0-6229-4698-b35e-481d93030e80)
+HD wallpaper: green coupe wallpaper, BMW, car, minimalism, black, simple background | Wallpaper Flare. (n.d.). https://www.wallpaperflare.com/green-coupe-wallpaper-bmw-car-minimalism-black-simple-background-wallpaper-pbimn
 
+Image 2 <br>
+![mini](https://github.com/Ryantayy/WebDev636/assets/139726938/5b060bc0-27a8-460e-9d7f-40410b8d8b7d)
+HD wallpaper: Car, Mini Cooper, Digital Art, Minimalism, Simple Background | Wallpaper Flare. (n.d.). https://www.wallpaperflare.com/car-mini-cooper-digital-art-minimalism-simple-background-wallpaper-mbnii
 
 
 
