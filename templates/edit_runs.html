@@ -1,0 +1,80 @@
+{% extends "adminInterface.html" %}
+
+{% block content %}
+
+<!--Display success message-->
+{% if success %}
+    <div class="alert alert-success">
+        Run details updated successfully!
+    </div>
+{% endif %}
+
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit Runs</h1>
+        <!-- Form to select either a driver or a course -->
+        <form method="post" action="{{ url_for('edit_runs') }}">
+
+            <!-- Dropdown for selecting a driver -->
+            <div class="mb-3">
+                <label for="driver" class="form-label">Select Driver</label>
+                <select class="form-select" name="driver" id="driver">
+                    <option value="" selected>Choose...</option>
+                    {% for driver in driver_list %}
+                        <option value="{{ driver[0] }}" {% if driver[0] == selected_driver %}selected{% endif %}>{{ driver[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Dropdown for selecting a course -->
+            <div class="mb-3">
+                <label for="course" class="form-label">Select Course</label>
+                <select class="form-select" name="course" id="course">
+                    <option value="" selected>Choose...</option>
+                    {% for course in course_list %}
+                    <option value="{{ course[0] }}" {% if course[0] == selected_course %}selected{% endif %}>{{ course[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Show Runs</button>
+        </form>
+
+        <!-- Display runs if any are available -->
+        {% if run_list %}
+        <h3 class="mt-4">List of Runs</h3>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Driver Name</th>
+                    <th>Course Name</th>
+                    <th>Run No.</th>
+                    <th>Run Time(s)</th>
+                    <th>Cones</th>
+                    <th>WD</th>
+                    <th>Run Total(s)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for run in run_list %}
+                <tr>
+                    <td>{{ run[0] }}</td>
+                    <td>{{ run[1] }}</td>
+                    <td>{{ run[2] }}</td>
+                    <td>{{ run[3] }}</td>
+                    <td>{{ run[4] }}</td>
+                    <td>{{ run[9] }}</td>
+                    <td>{{ run[10] }}</td>
+                    <td>{{ run[7] }}</td>
+                    <td><a href="{{ url_for('edit_individual_run', dr_id=run[0], crs_id=run[8], run_num=run[3]) }}">Edit</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+</body>
+{% endblock %}

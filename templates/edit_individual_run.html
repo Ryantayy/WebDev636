@@ -1,0 +1,77 @@
+{% extends "adminInterface.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!--Error Message to display if any-->
+    {% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!--Display success message-->
+    {% if request.args.get('update_success') %}
+        <div class="alert alert-success">
+            Run details updated successfully!
+        </div>
+    {% endif %}
+
+    <h3>Edit Run Details</h3>
+
+    <form method="post" action="{{ url_for('edit_individual_run', dr_id=run[0], crs_id=run[1], run_num=run[2]) }}">
+
+        <!-- ID (display only, not editable) -->
+        <div class="mb-3">
+            <label for="drId" class="form-label">Driver ID</label>
+            <input type="text" class="form-control" id="dr_id" value="{{ run[0] }}" readonly>
+        </div>
+
+        <!-- Driver Name -->
+        <div class="mb-3">
+            <label for="driverName" class="form-label">Driver Name</label>
+            <input type="text" class="form-control" id="driverName" value="{{ run[6] }}" readonly>
+        </div>
+
+        <!-- Course Name -->
+        <div class="mb-3">
+            <label for="courseName" class="form-label">Course Name</label>
+            <input type="text" class="form-control" id="courseName" value="{{ run[7] }}" readonly>
+        </div>
+
+        <!-- Run No. -->
+        <div class="mb-3">
+            <label for="RunNo." class="form-label">Run No.</label>
+            <input type="text" class="form-control" id="RunNo." value="{{ run[2] }}" readonly>
+        </div>
+
+        <!-- Time -->
+        <div class="mb-3">
+            <label for="time" class="form-label">Time</label>
+            <input type="number" class="form-control" id="time" name="time" step="0.01" value="{{ run[3] }}" min="0">
+        </div>
+
+        <!-- Cones -->
+        <div class="mb-3">
+            <label for="cones" class="form-label">Cones</label>
+            <input type="number" class="form-control" id="cones" name="cones" value="{{ run[4] }}">
+        </div>
+
+        <!-- WD -->
+        <div class="mb-3">
+            <label for="wd" class="form-label">WD</label>
+            <input type="number" class="form-control" id="wd" name="wd" value="{{ run[5] }}">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Update Run</button>
+        
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!-- overallresults.html -->
+{% extends "base.html" %}
+<!-- Extend the base template 'base.html'. -->
+
+{% block content %}
+
+<h2>Overall Results</h2>
+<!-- Display a heading for the overall results section. -->
+
+<table class="table">
+    <thead>
+        <!-- Table header row. -->
+        <tr>
+            <th>Driver ID</th>
+            <th>Name</th>
+            <th>Car Model</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            <th>Overall</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <!-- Loop through the overall_results list to display driver results in a table. -->
+        {% for result in overall_results %}            
+            <tr>
+                <!-- Display driver ID, name, car model, results for courses A to F, and overall result. -->
+                <td>{{ result[0] }}</td>
+                <td>{{ result[1] }}</td>
+                <td>{{ result[2] }}</td>
+                <td>{{ result[3] }}</td>
+                <td>{{ result[4] }}</td>
+                <td>{{ result[5] }}</td>
+                <td>{{ result[6] }}</td>
+                <td>{{ result[7] }}</td>
+                <td>{{ result[8] }}</td>
+                <td>{{ result[9] }}</td>
+            </tr>
+        {% endfor %}
+        <caption>*Time is displayed in seconds<br>*dnf = Did Not Finish <br> *NQ = Not Qualified</caption>
+        <!-- Display a caption with explanations of abbreviations. -->
+    </tbody>               
+</table>
+{% endblock %}
+

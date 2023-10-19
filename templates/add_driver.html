@@ -1,0 +1,93 @@
+{% extends "adminInterface.html" %}
+
+{% block content %}
+
+{% if errors %}
+    <!-- Display an alert with error messages if there are validation errors. -->
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% if success %}
+    <!-- Display a success message alert if a task is completed successfully. -->
+    <div class="alert alert-success">
+        Driver added successfully!
+    </div>
+{% endif %}
+
+
+<body>
+    <div class = "container mt-5">
+        <h1 class="mb-4">Add New Driver</h1>
+
+        <form action="/add_driver" method="post">
+            <!--Driver's First Name-->
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" name="first_name" value="{{ first_name if first_name is defined else '' }}" class="form-control" required>
+            </div>
+
+            <!--Driver's Surname-->
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" name="surname" value="{{ surname if surname is defined else '' }}" class="form-control" required>
+            </div>
+
+            <!-- Assign Car-->
+            <div class="form-group">
+                <label for="car">Assign Car:</label>
+                <select class="form-control" id="car" name="car">
+                    {% for car in car_list %}
+                        <option value="{{car[1]}}">{{car[1]}}-{{car[0]}}-{{car[2]}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Checkbox for Junior -->
+            <div class="form-check mb-3">
+                <input type="checkbox" id="is_junior" name="is_junior" value="yes" class="form-check-input" onchange="toggleJuniorFields()">
+                <label class="form-check-label" for="is_junior">Is Junior?</label>
+            </div>
+
+            <!-- Fields for Junior Driver (hidden by default)-->
+            <div id="juniorFields" style="display:none">
+                <!-- Date of Birth-->
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" name="date_of_birth" value="{{ date_of_birth if date_of_birth is defined else '' }}" class="form-control">
+                </div>
+                <!-- Caregiver -->
+                <div class="form-group">
+                    <label for="caregiver">Caregiver:</label>
+                    <select name="caregiver" class="form-control">
+                        <option value="" disabled {% if not caregiver_id %}selected{% endif %}>Choose...</option>
+                        {% for caregiver in caregiver_list %}
+                            <option value="{{caregiver[0]}}" {% if caregiver[0] == caregiver_id %}selected{% endif %}>{{caregiver[1]}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Add Driver</button>
+        </form>
+    </div>
+
+    <!-- Script to show/hide Junior fields -->
+    <script>
+        function toggleJuniorFields() {
+            const juniorFields = document.getElementById("juniorFields");
+                if (document.getElementById("is_junior").checked) {
+                    juniorFields.style.display = "block";
+                } else {
+                    juniorFields.style.display = "none";
+                }
+            }
+    </script>
+</body>
+{% endblock %}

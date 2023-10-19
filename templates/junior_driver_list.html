@@ -1,0 +1,40 @@
+<!-- junior_driver_list.html -->
+{% extends "adminInterface.html" %}
+<!-- Extend the base template 'adminInterface.html'. -->
+
+{% block content %}
+
+<h2>Junior Driver List</h2>
+<!-- Display a heading for the junior driver list section. -->
+
+<table class="table">
+    <thead>
+        <!-- Table header row. -->
+        <tr>
+            <th>Driver ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+            <th>Caregiver</th>
+            <th>Car Model</th>
+            <th>Drive Class</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <!-- Loop through the junior_driver_list to display junior driver details in a table. -->
+        {% for junior_driver in junior_driver_list %}            
+            <tr>
+                <!-- Display driver ID, name, date of birth, age, caregiver, car model, and drive class. -->
+                <td>{{ junior_driver[0] }}</td>
+                <td>{{ junior_driver[1] }}</td>
+                <td>{{ junior_driver[2] }}</td>
+                <td>{{ junior_driver[3] }}</td>
+                <td>{{ junior_driver[4] }}</td>
+                <td>{{ junior_driver[5] }}</td>
+                <td>{{ junior_driver[6] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>               
+</table>
+{% endblock %}
+

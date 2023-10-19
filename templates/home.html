@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+<!-- Extend the base template 'base.html'. -->
+
+{% block content %}
+
+<h1 class="display-2">Bankside Rakaia Motorkhana Mavens</h1>
+<!-- Display the event title in a large heading. -->
+<h1 class="display-6">Competition event hosted by BRMM Car Club</h1>
+<!-- Display additional event information in a smaller heading. -->
+
+<div class="d-flex justify-content-center flex-wrap">
+    <!-- Create a flex container for centered content (if needed). -->
+</div>
+
+<img src="{{ url_for('static', filename='car_image.jpeg') }}" class="img-fluid w-100" alt="Car Image">
+<!-- Display an image of a car using a URL from the 'static' folder. -->
+
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends "adminInterface.html" %}
+<!-- Extend the base template 'adminInterface.html'. -->
+
+{% block content %}
+<!-- Define a block named 'content' that will replace the content in the base template. -->
+
+ <h1 class="display-2">Administrator Interface </h1>
+ <!-- Display a heading for the administrator interface. -->
+
+<img src="{{ url_for('static', filename='mini.jpeg') }}" class="img-fluid w-100" alt="Car Image">
+<!-- Display an image sourced from the 'static' folder with responsive sizing and an alternative text description. -->
+
+{% endblock %}
+<!-- End the 'content' block. -->

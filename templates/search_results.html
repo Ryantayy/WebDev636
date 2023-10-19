@@ -1,0 +1,39 @@
+{% extends "adminInterface.html" %}
+<!-- Extend the base template 'adminInterface.html'. -->
+
+{% block content %}
+
+<h2>Driver List</h2>
+<!-- Display a heading for the driver list section. -->
+
+<table class="table">
+    <!-- Create an HTML table to display driver information. -->
+    <thead>
+        <!-- Table header row. -->
+        <tr>
+            <th>Driver ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+            <th>Caregiver</th>
+            <th>Car Model</th>
+            <th>Drive Class</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <!-- Loop through the 'results' list to display driver details in the table. -->
+        {% for result in results %}            
+            <tr>
+                <!-- Display driver ID, name, date of birth, age, caregiver, car model, and drive class. -->
+                <td>{{ result[0] }}</td>
+                <td>{{ result[1] }}</td>
+                <td>{{ result[2] }}</td>
+                <td>{{ result[3] }}</td>
+                <td>{{ result[4] }}</td>
+                <td>{{ result[5] }}</td>
+                <td>{{ result[6] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>               
+</table>
+{% endblock %}

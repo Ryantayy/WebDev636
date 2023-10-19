@@ -1,12 +1,41 @@
+<!-- driverlist.html -->
 {% extends "base.html" %}
+<!-- Extend the base template 'base.html'. -->
+
 {% block content %}
-<!-- driver_list is the variable passed in containing the list of drivers -->
-<!-- Add code to display a list of drivers -->
 
 <h2>Driver List</h2>
+<!-- Heading for the driver list section. -->
 
-<p>For the Milestone submission, this page just needs to display this text successfully in your browser.</p>
-
-<p>Add the driver list here for your final submission.</p>
+<table class="table">
+    <thead>
+        <!-- Table header row. -->
+        <tr>
+            <th>Driver ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+            <th>Caregiver's Name</th>
+            <th>Car Model</th>
+            <th>Drive Class</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <!-- Loop through the driver_list to display driver details in a table. -->
+        {% for driver in driver_list %}            
+            <tr {% if driver[3] is not none and driver[3] >= 12 and driver[3] <= 25%}class="table-warning"{% endif %}>
+                <!-- Display driver ID, name (with a link to driver_run_details), date of birth, age, caregiver's name, car model, and drive class. -->
+                <td>{{ driver[0] }}</td>
+                <td><a href="{{ url_for('driver_run_details', driver_id=driver[0]) }}">{{ driver[1] }}</a></td>
+                <td>{{ driver[2] }}</td>
+                <td>{{ driver[3] }}</td>
+                <td>{{ driver[4] }}</td>
+                <td>{{ driver[5] }}</td>
+                <td>{{ driver[6] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>               
+</table>
 
 {% endblock %}
+

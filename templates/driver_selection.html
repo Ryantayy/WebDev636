@@ -1,0 +1,19 @@
+<!-- driver_selection.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Select a Driver</h2>
+
+<!-- Create a form with a dropdown list -->
+<form method="post" action="/driver_run_details">
+    <label for="driver_select" class="form-label">Select a driver:</label>
+    <select class="form-select" name="driver_id" id="driver_select">
+        <option value="" selected>Choose...</option>
+        {% for driver in driver_list %}
+            <option value="{{ driver[0] }}">{{ driver[1] }} {{ driver[2] }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary mt-2">Show Run Details</button>
+</form>
+
+{% endblock %}

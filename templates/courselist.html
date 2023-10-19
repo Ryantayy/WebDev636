@@ -1,23 +1,34 @@
 {% extends "base.html" %}
+<!-- Extend the base template 'base.html'. -->
+
 {% block content %}
 
 <h2>Course List</h2>
-<h3>current competition courses</h3>
+<h3>Current competition courses</h3>
 
-<!-- code to display list of courses-->
-<table>
+<!-- Code to display a list of courses in a table. -->
+<table class="table">
     <tr>
         <th>Course</th>
         <th>Name</th>
         <th>Map diagram</th>
     </tr>
-    {% for course in course_list %}
-        <tr>
-            {% for field in course %}
-                <td>{{field}}</td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
+    <tbody class="table-group-divider">
+        {% for course in course_list %}
+            <!-- Loop through the course_list and display each course's details. -->
+            <tr>
+                <td>{{ course[0] }}</td>
+                <td>{{ course[1] }}</td>
+                <td>
+                    <!-- Display a clickable image of the course's map. -->
+                    <a href="{{ url_for('static', filename=course[2]) }}">
+                        <img src="{{ url_for('static', filename=course[2]) }}" alt="{{ course[1] }} Map" width="150" height="150">
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}
+

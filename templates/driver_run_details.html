@@ -1,0 +1,46 @@
+<!-- driver_details.html -->
+{% extends "base.html" %}
+<!-- Extend the base template 'base.html'. -->
+
+{% block content %}
+
+<h2>Driver Details</h2>
+<h3>Driver: {{ driver_list[1] }} {{ driver_list[2] }}</h3>
+<!-- Display the driver's name using data from driver_list. -->
+<p>Driver ID: {{ driver_list[0] }}</p>
+<!-- Display the driver's ID using data from driver_list. -->
+<p>Car Model: {{ driver_list[3] }}</p>
+<!-- Display the driver's car model using data from driver_list. -->
+<p>Drive Class: {{ driver_list[4] }}</p>
+<!-- Display the driver's drive class using data from driver_list. -->
+
+<h3>Run Details</h3>
+<!-- Heading for the run details section. -->
+<table class="table">
+    <thead>
+        <!-- Table header row. -->
+        <tr>
+            <th>Course</th>
+            <th>Run No.</th>
+            <th>Run Time(s)</th>
+            <th>Cones</th>
+            <th>WD</th>
+            <th>Run Total(s)</th>   
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <!-- Loop through the run_list to display run details. -->
+        {% for run in run_list %}
+            <tr>
+            <!-- Display course, run number, run time, cones, WD, and run total for each run. -->
+            <td>{{ run[6] }}</td>
+            <td>{{ run[2] }}</td>
+            <td>{{ run[3] }}</td>
+            <td>{{ run[8] }}</td>
+            <td>{{ run[9] }}</td>
+            <td>{{ run[7] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
