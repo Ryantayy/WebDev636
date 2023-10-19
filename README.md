@@ -107,13 +107,17 @@ Template: add_driver.html <br>
 Data Passed: List of available cars, caregivers, and potential error messages. <br>
 Data Relationship: When the page is loaded, the add_driver() function fetches the list of available cars and caregivers from the database, which is then passed to the add_driver.html template to populate the respective dropdowns. When a form submission is detected (via POST request), the same add_driver() function is responsible for data validation and database insertion. If there are any validation errors, the function repopulates the form fields with the entered data and shows relevant error messages. <br>
 
-**3. Assumptions and design decisions:**
+**3. Assumptions and design decisions:** <br>
 Assumption: 
 - Drivers aged 17 and older should not have a designated caredriver.
-- The age of driver is limited to 10 to 100.
-- The data for cones is either None of an integer.
+- The age of the driver is limited to 10 to 100.
+- The data for cones is either None or an integer.
 - The data for wd is either 0 or 1.
+- A car model can be associated with more than one car_num (Eg. MX-5).
+- Driver's name is to be sorted in surname and last name order but displayed in a conventional way.
 
+Design decision:
+-  
 
 
 
