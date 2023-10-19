@@ -155,11 +155,11 @@ Usability & User Experience: Separating routes ensures that each user type only 
 
 **5. Image Sources:** <br>
 Image 1 <br>
-![image](https://github.com/Ryantayy/WebDev636/assets/139726938/657ae5b0-6229-4698-b35e-481d93030e80)
+![image](https://github.com/Ryantayy/WebDev636/assets/139726938/657ae5b0-6229-4698-b35e-481d93030e80) <br>
 HD wallpaper: green coupe wallpaper, BMW, car, minimalism, black, simple background | Wallpaper Flare. (n.d.). https://www.wallpaperflare.com/green-coupe-wallpaper-bmw-car-minimalism-black-simple-background-wallpaper-pbimn
 
 Image 2 <br>
-![mini](https://github.com/Ryantayy/WebDev636/assets/139726938/5b060bc0-27a8-460e-9d7f-40410b8d8b7d)
+![mini](https://github.com/Ryantayy/WebDev636/assets/139726938/5b060bc0-27a8-460e-9d7f-40410b8d8b7d) <br>
 HD wallpaper: Car, Mini Cooper, Digital Art, Minimalism, Simple Background | Wallpaper Flare. (n.d.). https://www.wallpaperflare.com/car-mini-cooper-digital-art-minimalism-simple-background-wallpaper-mbnii
 
 
