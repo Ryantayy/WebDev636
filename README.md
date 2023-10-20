@@ -138,8 +138,6 @@ In essence, each design decision was a balance between user-centric aesthetics a
   ); <br>
 **- Which line of SQL code sets up the relationship between the car and driver tables? <br>**
   FOREIGN KEY (car) REFERENCES car(car_num) <br>
-  ON UPDATE CASCADE <br>
-  ON DELETE CASCADE <br>
 **- Which 3 lines of SQL code insert the Mini and GR Yaris details into the car table? <br>**
   INSERT INTO car VALUES <br>
   (11,'Mini','FWD'), <br>
