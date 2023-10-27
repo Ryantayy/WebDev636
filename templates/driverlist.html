@@ -23,12 +23,12 @@
     <tbody class="table-group-divider">
         <!-- Loop through the driver_list to display driver details in a table. -->
         {% for driver in driver_list %}            
-            <tr {% if driver[3] is not none and driver[3] >= 12 and driver[3] <= 25%}class="table-warning"{% endif %}>
+            <tr {% if driver[3] is not none and driver[3] >= 12 and driver[3] <= 25 %}class="table-warning"{% endif %}>
                 <!-- Display driver ID, name (with a link to driver_run_details), date of birth, age, caregiver's name, car model, and drive class. -->
                 <td>{{ driver[0] }}</td>
                 <td><a href="{{ url_for('driver_run_details', driver_id=driver[0]) }}">{{ driver[1] }}</a></td>
                 <td>{{ driver[2] }}</td>
-                <td>{{ driver[3] }}</td>
+                <td>{{ driver[7] }}</td>
                 <td>{{ driver[4] }}</td>
                 <td>{{ driver[5] }}</td>
                 <td>{{ driver[6] }}</td>

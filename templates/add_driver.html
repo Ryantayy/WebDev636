@@ -25,7 +25,19 @@
     <div class = "container mt-5">
         <h1 class="mb-4">Add New Driver</h1>
 
-        <form action="/add_driver" method="post">
+        <!-- Check if junior -->
+        <form action="{{ url_for('add_driver') }}" method="post">
+            <div class="form-group">
+                <label for="is_junior">Is Junior:</label>
+                <select name="is_junior" onchange="this.form.submit()" class="form-control">
+                    <option value="no" {% if is_junior == 'no' %}selected{% endif %}>No</option>
+                    <option value="yes" {% if is_junior == 'yes' %}selected{% endif %}>Yes</option>
+                </select>
+                <input type="hidden" name="form_submit_type" value="junior_change">
+            </div>
+        </form>
+
+            <form action="{{ url_for('add_driver') }}" method="post">
             <!--Driver's First Name-->
             <div class="form-group">
                 <label for="first_name">First Name:</label>
@@ -43,51 +55,34 @@
                 <label for="car">Assign Car:</label>
                 <select class="form-control" id="car" name="car">
                     {% for car in car_list %}
-                        <option value="{{car[1]}}">{{car[1]}}-{{car[0]}}-{{car[2]}}</option>
+                        <option value="{{car[1]}}">{{car[1]}} - {{ car[0]}}</option>
                     {% endfor %}
                 </select>
             </div>
 
-            <!-- Checkbox for Junior -->
-            <div class="form-check mb-3">
-                <input type="checkbox" id="is_junior" name="is_junior" value="yes" class="form-check-input" onchange="toggleJuniorFields()">
-                <label class="form-check-label" for="is_junior">Is Junior?</label>
-            </div>
-
+            {% if is_junior == 'yes' %}
             <!-- Fields for Junior Driver (hidden by default)-->
-            <div id="juniorFields" style="display:none">
-                <!-- Date of Birth-->
-                <div class="form-group">
-                    <label for="date_of_birth">Date of Birth:</label>
-                    <input type="date" name="date_of_birth" value="{{ date_of_birth if date_of_birth is defined else '' }}" class="form-control">
-                </div>
-                <!-- Caregiver -->
-                <div class="form-group">
-                    <label for="caregiver">Caregiver:</label>
-                    <select name="caregiver" class="form-control">
-                        <option value="" disabled {% if not caregiver_id %}selected{% endif %}>Choose...</option>
-                        {% for caregiver in caregiver_list %}
-                            <option value="{{caregiver[0]}}" {% if caregiver[0] == caregiver_id %}selected{% endif %}>{{caregiver[1]}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+            <div class="form-group">
+            <!-- Date of Birth-->
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" name="date_of_birth" class="form-control">
             </div>
+            <!-- Caregiver -->
+            <div class="form-group">
+                <label for="caregiver">Caregiver:</label>
+                <select name="caregiver" class="form-control">
+                    <option value="">Select a Caregiver...</option>
+                    {% for caregiver in caregiver_list %}
+                        <option value="{{caregiver[0]}}" {% if caregiver[0] == caregiver_id %}selected{% endif %}>{{caregiver[1]}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Add Driver</button>
         </form>
     </div>
 
-    <!-- Script to show/hide Junior fields -->
-    <script>
-        function toggleJuniorFields() {
-            const juniorFields = document.getElementById("juniorFields");
-                if (document.getElementById("is_junior").checked) {
-                    juniorFields.style.display = "block";
-                } else {
-                    juniorFields.style.display = "none";
-                }
-            }
-    </script>
 </body>
 {% endblock %}

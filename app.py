@@ -84,9 +84,9 @@ def listdrivers():
     # Execute an SQL query to fetch details of all drivers, including car and caregiver information.
     connection.execute("""SELECT d.driver_id, 
                         CONCAT(d.first_name, ' ', d.surname) AS Name, 
-                        d.date_of_birth, d.age, 
-                        CONCAT(cg.first_name, ' ', cg.surname) AS Caregiver,
-                        c.model, c.drive_class
+                        COALESCE(d.date_of_birth, '') AS date_of_birth,
+                        d.age, COALESCE(CONCAT(cg.first_name, ' ', cg.surname), '') AS Caregiver,
+                        c.model, c.drive_class, COALESCE(d.age, '') AS age_display
                         FROM driver d
                         JOIN car c ON d.car = c.car_num
                         LEFT JOIN driver cg ON d.caregiver = cg.driver_id
@@ -391,48 +391,53 @@ def add_driver():
     connection = getCursor()
     errors = []
     success = True if 'success' in request.args else False
+    first_name = ""
+    surname = ""
+    date_of_birth = None
+    caregiver_id = None
 
     #Fetch the list of cars and caregivers
     connection.execute("""SELECT DISTINCT c.model, c.car_num, c.drive_class
-                        FROM car c
-                        JOIN driver d ON d.car = c.car_num;""")
+                                FROM car c;""")
     carList = connection.fetchall()
 
+    # Fetch the list of caregivers
     connection.execute("""SELECT driver_id, CONCAT(first_name, ' ', surname) AS Name
                         FROM driver
                         WHERE age is null or age >= 26;""")
-    
     caregiverList = connection.fetchall()
 
     if request.method == 'POST':
-        #Fetch driver details from the form
-        first_name = request.form.get('first_name')
-        surname = request.form.get('surname')
-        is_junior = request.form.get('is_junior')
-        is_junior = 'is_junior' in request.form
-        age = None
-        caregiver_id = request.form.get('caregiver')
-        car = request.form.get('car')
-        date_of_birth = request.form.get('date_of_birth') or None
+        form_submit_type = request.form.get('form_submit_type')
 
-        #Input Validation
-        if not first_name or not first_name.strip():
-            errors.append('First name is required and cannot be empty!')
-        
-        if not surname or not surname.strip():
-            errors.append('Surname is required and cannot be empty!')
-        
-        #Check if first_name or surname are numeric
-        if first_name.isnumeric():
-            errors.append('First name cannot be numeric!')
-        if surname.isnumeric():
-            errors.append('Surname cannot be numeric!')
+         # If Yes is selected in 'Is Junior' field
+        if form_submit_type == 'junior_change':
+            is_junior = request.form.get('is_junior')
+            return render_template('add_driver.html', car_list=carList, caregiver_list=caregiverList, date_of_birth=date_of_birth, caregiver_id=caregiver_id, is_junior=is_junior)
 
-        if not date_of_birth:
-            date_of_birth = None  # Set date_of_birth to none if it's empty
-        
-        if is_junior:
-            if not date_of_birth:
+        #Fetch new driver details from the form
+        else:
+            first_name = request.form.get('first_name').strip()
+            surname = request.form.get('surname').strip()
+            is_junior = request.form.get('is_junior') == 'yes'
+            age = None
+            caregiver_id = request.form.get('caregiver')
+            car = request.form.get('car')
+            date_of_birth = request.form.get('date_of_birth') or None
+
+            #Input Validation
+            if not first_name or not first_name.strip():
+                errors.append('First name is required and cannot be empty!')
+            elif not surname or not surname.strip():
+                errors.append('Surname is required and cannot be empty!')
+            #Check if first_name or surname are numeric
+            elif first_name.isnumeric():
+                errors.append('First name cannot be numeric!')
+            elif surname.isnumeric():
+                errors.append('Surname cannot be numeric!')
+            elif not date_of_birth:
+                date_of_birth = None  # Set date_of_birth to none if it's empty
+            elif is_junior and not date_of_birth:
                 errors.append('Date of Birth is required for junior driver!')
             else:
                 try:
@@ -443,7 +448,7 @@ def add_driver():
                     today = datetime.today()
                     age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
                     
-                     # Define the sensible range for age
+                    # Define the sensible range for age
                     MIN_AGE = 10
                     MAX_AGE = 100
 
@@ -465,27 +470,29 @@ def add_driver():
                 except ValueError:
                     errors.append('Invalid date format for Date of Birth. Please use YYYY-MM-DD.')
 
-        #returning the render_template with the errors list so the error messages can be displayed.
-        if errors:
-            return render_template('add_driver.html', car_list=carList, caregiver_list=caregiverList, first_name=first_name, surname=surname, date_of_birth=date_of_birth, errors=errors)
+            #returning the render_template with the errors list so the error messages can be displayed.
+            if errors:
+                return render_template('add_driver.html', car_list=carList, caregiver_list=caregiverList, first_name=first_name, surname=surname, date_of_birth=date_of_birth, errors=errors)
 
-        #Only pass caregiver_id if the driver is a junior
-        if is_junior:
-            caregiver_id = request.form.get('caregiver')
-       
-        #Add a new driver
-        connection.execute("INSERT INTO driver (first_name, surname, date_of_birth, age, caregiver, car) VALUES (%s, %s, %s, %s, %s, %s);", 
-                           (first_name, surname, date_of_birth, age, caregiver_id, car))
+            #Only pass caregiver_id if the driver is a junior
+            if is_junior == 'yes':
+                caregiver_id = request.form.get('caregiver')
 
-        # driver_id of the last inserted driver
-        driver_id = connection.lastrowid 
-        
-        #Add 12 blanks runs
-        courses = ['A', 'B', 'C', 'D', 'E', 'F']
-        for course in courses:
-            for run_num in range(1, 3):
-                connection.execute("INSERT INTO run (dr_id, crs_id, run_num, seconds, cones, wd) VALUES (%s, %s, %s, NULL, NULL, 0);", (driver_id, course, run_num))
+            if is_junior == 'no':
+                caregiver_id = None  # Set caregiver_id to none if the driver is a junior
+            #Add a new driver
+            connection.execute("INSERT INTO driver (first_name, surname, date_of_birth, age, caregiver, car) VALUES (%s, %s, %s, %s, %s, %s);", 
+                            (first_name, surname, date_of_birth, age, caregiver_id, car))
+
+            # driver_id of the last inserted driver
+            driver_id = connection.lastrowid 
+            
+            #Add 12 blanks runs
+            courses = ['A', 'B', 'C', 'D', 'E', 'F']
+            for course in courses:
+                for run_num in range(1, 3):
+                    connection.execute("INSERT INTO run (dr_id, crs_id, run_num, seconds, cones, wd) VALUES (%s, %s, %s, NULL, NULL, 0);", (driver_id, course, run_num))
             
         return redirect(url_for('add_driver', success=True))
 
-    return render_template('add_driver.html', car_list=carList, caregiver_list=caregiverList, errors=errors, success=success)
+    return render_template('add_driver.html', car_list=carList, caregiver_list=caregiverList, first_name=first_name, surname=surname, date_of_birth=date_of_birth, errors=errors, success=success)

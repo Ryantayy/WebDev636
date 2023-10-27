@@ -1,14 +1,62 @@
-/* ----- Delete all rows of data from the tables: ----- */
-/* ----- (Does not delete the tables though - use DROP to delete an object in SQL (table, query, schema, etc.) ----- */
+-- Drop the tables
 
-DELETE FROM run;
+SET foreign_key_checks = 0;
 
-DELETE FROM driver;
+DROP TABLE IF EXISTS run;
+DROP TABLE IF EXISTS course;
+DROP TABLE IF EXISTS driver;
+DROP TABLE IF EXISTS car;
 
-DELETE FROM car;
+SET foreign_key_checks = 1;
 
-DELETE FROM course;
+-- Re-create the tables
+CREATE TABLE IF NOT EXISTS car
+(
+car_num INT PRIMARY KEY NOT NULL,
+model VARCHAR(20) NOT NULL,
+drive_class VARCHAR(3) NOT NULL
+);
 
+CREATE TABLE IF NOT EXISTS driver
+(
+driver_id INT auto_increment PRIMARY KEY NOT NULL,
+first_name VARCHAR(25) NOT NULL,
+surname VARCHAR(25) NOT NULL,
+date_of_birth DATE,
+age INT,
+caregiver INT,
+car INT NOT NULL,
+FOREIGN KEY (caregiver) REFERENCES driver(driver_id)
+ON UPDATE CASCADE,
+FOREIGN KEY (car) REFERENCES car(car_num)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS course
+(
+course_id VARCHAR(1) PRIMARY KEY NOT NULL,
+name VARCHAR(30) NOT NULL,
+image VARCHAR(20)
+);
+
+/* Composite key: driver+course+run_num together */
+CREATE TABLE IF NOT EXISTS run
+(
+dr_id INT NOT NULL,
+crs_id VARCHAR(1) NOT NULL,
+run_num INT NOT NULL,
+seconds FLOAT,
+cones INT,
+wd BOOLEAN NOT NULL DEFAULT 0,
+PRIMARY KEY (dr_id, crs_id, run_num),
+FOREIGN KEY (dr_id) REFERENCES driver(driver_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (crs_id) REFERENCES course(course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
 
 /* ----- Insert data into the tables: ----- */
 
