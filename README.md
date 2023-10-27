@@ -115,6 +115,7 @@ Assumptions:
 - The data for wd is either 0 or 1.
 - A car model can be associated with more than one car_num (Eg. MX-5).
 - Driver's name is to be sorted in surname and last name order but displayed in a conventional way.
+- Only course A-F is available for this competition. 
 
 <p> Design decision: <br>
 The website was crafted with an emphasis on both functionality and aesthetics. Here's a breakdown of the design decisions and their rationale:<br>
