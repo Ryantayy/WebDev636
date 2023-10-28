@@ -65,8 +65,8 @@ def driver_run_details(driver_id=None):
     driverList = connection.fetchone()  # Get a single driver record.
     
     # Query to fetch run details (e.g., run time, cones, course name) for the given driver_id.
-    connection.execute("""SELECT r.*, c.name, ROUND(r.seconds + IFNULL(r.cones, 0) * 5 + CASE WHEN r.wd = 1 THEN 10 ELSE 0 END, 2) AS run_total,
-                        CASE WHEN r.cones IS NULL THEN '' ELSE r.cones END AS cones_display,
+    connection.execute("""SELECT r.dr_id, r.crs_id, r.run_num, COALESCE(r.seconds, '') AS seconds, COALESCE(r.cones, '') AS cones, r.wd, 
+                        c.name, COALESCE(ROUND(r.seconds + IFNULL(r.cones, 0) * 5 + CASE WHEN r.wd = 1 THEN 10 ELSE 0 END, 2), '') AS run_total,
                         CASE WHEN r.wd = 1 THEN 'WD' ELSE '' END AS wd_display
                         FROM run r
                         JOIN course c ON r.crs_id = c.course_id
@@ -212,7 +212,7 @@ def junior_driver_list():
     # Execute an SQL query to fetch details of junior drivers (age between 12 and 25).
     connection.execute("""
         SELECT d.driver_id, CONCAT(d.first_name, ' ', d.surname) AS Name, d.date_of_birth, d.age, 
-        CONCAT(cg.first_name, ' ', cg.surname) AS Caregiver_Name, 
+        COALESCE(CONCAT(cg.first_name, ' ', cg.surname), '') AS Caregiver_Name, 
         c.model, c.drive_class
         FROM driver d
         JOIN car c ON d.car = c.car_num
@@ -245,9 +245,10 @@ def search_driver():
     connection.execute("""
         SELECT d.driver_id, 
         CONCAT(d.first_name, ' ', d.surname) AS Name, 
-        d.date_of_birth, d.age, 
-        CONCAT(cg.first_name, ' ', cg.surname) AS Caregiver,
-        c.model, c.drive_class
+        COALESCE(d.date_of_birth, '') AS date_of_birth, d.age, 
+        COALESCE(CONCAT(cg.first_name, ' ', cg.surname), '') AS Caregiver,
+        c.model, c.drive_class,
+        COALESCE(d.age, '') AS age_display
         FROM driver d
         JOIN car c ON d.car = c.car_num
         LEFT JOIN driver cg ON d.caregiver = cg.driver_id
@@ -279,8 +280,8 @@ def edit_runs():
 
     # Base query to fetch run details for filtering
     base_query = """SELECT r.dr_id, CONCAT(d.first_name, ' ', d.surname) AS Name, c.name AS Course_Name, 
-                   r.run_num, r.seconds, r.cones, r.wd,  
-                   ROUND(r.seconds + IFNULL(r.cones, 0) * 5 + IFNULL(r.wd, 0) * 10, 2) AS run_total, r.crs_id, 
+                   r.run_num, COALESCE(r.seconds, '') AS seconds, r.cones, r.wd,  
+                   COALESCE(ROUND(r.seconds + IFNULL(r.cones, 0) * 5 + IFNULL(r.wd, 0) * 10, 2), '') AS run_total, r.crs_id, 
                    CASE WHEN r.cones IS NULL THEN '' ELSE r.cones END AS cones_display,
                    CASE WHEN r.wd = 1 THEN 'WD' ELSE '' END AS wd_display
                    FROM run r
