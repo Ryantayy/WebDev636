@@ -47,10 +47,11 @@ def select_driver():
     return render_template("driver_selection.html", driver_list=driverList)
 
 # Define a route that handles both GET and POST requests for driver run details.
-@app.route("/driver_run_details/<int:driver_id>", methods=["GET"])
-@app.route("/driver_run_details", methods=["POST"])
+@app.route("/driver_run_details", methods=["GET", "POST"])
 def driver_run_details(driver_id=None):
     # Check if the request method is POST, and if so, retrieve driver_id from the form data.
+    if request.method == "GET":
+        driver_id = request.args.get("driver_id")
     if request.method == "POST":
         driver_id = request.form.get("driver_id")
     
