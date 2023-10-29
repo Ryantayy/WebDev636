@@ -70,7 +70,6 @@ Data Passed: None. <br>
 Data Relationship: Direct rendering of the home.html template for drivers. <br><p/>
 
 11. **search_driver (/search_driver):** <br>
-Function: search_driver() <br>
 Description: Allows users to search for drivers based on keywords and displays the results. <br>
 Template: search_results.html <br>
 Data Passed: Search results based on the keyword. <br>
