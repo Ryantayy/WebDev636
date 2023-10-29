@@ -30,12 +30,12 @@ Template: driver_selection.html <br>
 Data Passed: List of drivers with their details. <br>
 Data Relationship: The /select_driver route fetches a list of drivers from the database in the select_driver() function and provides this list to the driver_selection.html template to display. <br><p/>
 
-<p>/driver_run_details, methods=["GET"]/: and /driver_run_details, methods=["POST"]: <br>
+<p>/driver_run_details <br>
 Function: driver_run_details <br>
 Description: Displays details of a specific driver and their runs. <br>
 Template: driver_run_details.html <br>
 Data Passed: Driver details and their corresponding run details. <br>
-Data Relationship: Depending on the method, either it fetches the driver ID from the listdriver URL or from the POST request via a form submission. Using this ID, it fetches the driver's and their run details from the database. This data is then passed to the driver_run_details.html template for display. <br><p/>
+Data Relationship: Depending on the method, either it fetches the driver ID from the list driver URL or from the POST request via a form submission. Using this ID, it fetches the driver's and their run details from the database. This data is then passed to the driver_run_details.html template for display. <br><p/>
 
 <p>/listdrivers: <br>
 Function: listdrivers() <br>
@@ -48,8 +48,8 @@ Data Relationship: The /listdrivers route fetches a list of drivers from the dat
 Function: overallresults() <br>
 Description: Displays overall results for each driver across different courses. <br>
 Template: overallresults.html <br>
-Data Passed: Aggregated results of drivers across courses. <br>
-Data Relationship: The /overallresults route fetches aggregated results of drivers across different courses and then provides this data to the overallresults.html template to display. <br><p/>
+Data Passed: Run totals of drivers across courses. <br>
+Data Relationship: The /overallresults route fetches run totals of drivers across different courses and then provides this data to the overallresults.html template to display. <br><p/>
 
 <p>/graph: <br>
 Function: showgraph() <br>
@@ -90,22 +90,22 @@ Data Relationship: Users input a keyword, and the search_driver() function fetch
 Function: edit_runs() <br>
 Description: Allows users to edit the runs for specific drivers and courses. <br>
 Template: edit_runs.html <br>
-Data Passed: List of drivers, courses, and runs based on selected criteria. <br>
-Data Relationship: Users select a driver and/or course, and the corresponding run details are fetched from the database. This data is then passed to the edit_runs.html template for display and editing. <br><p/>
+Data Passed: List of drivers, courses, and runs based on selected criteria, success message. <br>
+Data Relationship: Users select a driver and/or course, and the corresponding run details are fetched from the database. This data is then passed to the edit_runs.html template for display and editing. Upon successful update, the success message will then display. <br><p/>
 
 <p>/edit_individual_run： <br>
 Function: edit_individual_run() <br>
 Description: Allows users to edit the details of an individual run.<br>
 Template: edit_individual_run.html <br>
-Data Passed: Details of the selected run, errors(if there are validation errors in the form) <br>
-Data Relationship: Run details are fetched from the database based on the provided driver ID, course ID, and run number. If the users submit the form with updates, the data is validated and, if valid the run details are updated in the database. If there are validation errors, the errors list is passed to the edit_individual_run.html template along with the run details for display and editing. On successful update, the same data will then be passed to the edit_run route and the updated data will then display. <br><p/>
+Data Passed: Details of the selected run, errors(if there are validation errors in the form), success message. <br>
+Data Relationship: Run details are fetched from the database based on the provided driver ID, course ID, and run number. If the users submit the form with updates, the data is validated and, if valid the run details are updated in the database. If there are validation errors, the errors list is passed to the edit_individual_run.html template along with the run details for display and editing. On successful update, the same data will then be passed to the edit_run route and the updated data and success message will then display. <br><p/>
 
 <p>/add_driver: <br>
 Function: add_driver() <br>
 Description: Allows the user to add a new driver. <br>
 Template: add_driver.html <br>
-Data Passed: List of available cars, caregivers, and potential error messages. <br>
-Data Relationship: When the page is loaded, the add_driver() function fetches the list of available cars and caregivers from the database, which is then passed to the add_driver.html template to populate the respective dropdowns. When a form submission is detected (via POST request), the same add_driver() function is responsible for data validation and database insertion. If there are any validation errors, the function repopulates the form fields with the entered data and shows relevant error messages. <br><p/>
+Data Passed: Details of the new driver, list of available cars, caregivers, potential error messages and success message. <br>
+Data Relationship: When the page is loaded, the add_driver() function fetches the list of available cars and caregivers from the database, which is then passed to the add_driver.html template to populate the respective dropdowns. When a form submission is detected (via POST request), the same add_driver() function is responsible for data validation and database insertion. If there are any validation errors, the function repopulates the form fields with the entered data and shows relevant error messages. Upon successful update, the success message will display. <br><p/>
 
 **3. Assumptions and design decisions:** <br>
 Assumptions: 
